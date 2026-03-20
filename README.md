@@ -64,7 +64,7 @@ Everything else should compile down to those.
 - stage planning
 - sequential shell execution
 - hook interface
-- console sink
+- console sink with animated in-flight task status
 - minimal Textual shell
 - width-aware plan rendering with:
   - stage table
@@ -118,6 +118,7 @@ tasks:
 ## Documentation
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/CLI.md](docs/CLI.md)
 - [docs/MANIFESTS.md](docs/MANIFESTS.md)
 - [docs/PLUGINS.md](docs/PLUGINS.md)
 - [docs/ROADMAP.md](docs/ROADMAP.md)
