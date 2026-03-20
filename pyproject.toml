@@ -4,12 +4,28 @@ version = "0.1.0"
 description = "DAG-first YAML experiment runner with sequential and parallel execution"
 readme = "README.md"
 requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Agustin + Codex" }]
+keywords = ["dag", "experiments", "workflow", "matrix", "runner"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+]
 dependencies = [
   "pydantic>=2.11.0",
   "pyyaml>=6.0.2",
   "rich>=14.0.0",
   "textual>=6.3.0",
 ]
+
+[project.scripts]
+runmatrix = "runmatrix.cli.main:main"
+
+[project.urls]
+Homepage = "https://github.com/agustif/runmatrix"
+Repository = "https://github.com/agustif/runmatrix"
+Issues = "https://github.com/agustif/runmatrix/issues"
 
 [dependency-groups]
 dev = [
@@ -42,3 +58,7 @@ indent-style = "space"
 
 [tool.ty.src]
 include = ["runmatrix", "tests"]
+
+[tool.setuptools.packages.find]
+include = ["runmatrix*"]
+exclude = ["demo*", "docs*", "examples*", "tests*"]

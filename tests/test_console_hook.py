@@ -17,3 +17,20 @@ def test_console_hook_tracks_status_lifecycle() -> None:
     assert hook._status is not None
     hook.after_task_run(task, result)
     assert hook._status is None
+
+
+def test_console_hook_renders_output_without_crashing() -> None:
+    hook = ConsoleHook(max_output_lines=2)
+    task = ExpandedTask(id="task", base_id="task", command="echo hi", env={}, needs=[])
+    result = TaskResult(
+        task_id="task",
+        status=TaskStatus.SUCCEEDED,
+        returncode=0,
+        stdout="line1\nline2\nline3",
+        stderr="warn1\nwarn2\nwarn3",
+    )
+
+    hook.before_task_run(task)
+    hook.after_task_run(task, result)
+
+    assert hook._status is None

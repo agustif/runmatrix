@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 from runmatrix.cli.render import render_dependency_tree, render_stage_table
@@ -24,7 +25,7 @@ def _load_manifest(path: Path):
     raise ValueError(f"Unsupported manifest file extension: {path.suffix}")
 
 
-def cmd_plan(path: Path) -> None:
+def cmd_inspect(path: Path) -> None:
     manifest = _load_manifest(path)
     plan = build_plan(manifest)
     print(render_stage_table(plan))
@@ -40,18 +41,27 @@ def cmd_run(path: Path) -> None:
 
 
 def main() -> None:
+    is_manifest_path = (
+        len(sys.argv) >= 2
+        and not sys.argv[1].startswith("-")
+        and Path(sys.argv[1]).suffix.lower() in {".yaml", ".yml", ".json", ".toml"}
+    )
+    if is_manifest_path:
+        cmd_run(Path(sys.argv[1]))
+        return
+
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
 
-    plan = sub.add_parser("plan")
-    plan.add_argument("manifest", type=Path)
+    inspect_cmd = sub.add_parser("inspect")
+    inspect_cmd.add_argument("manifest", type=Path)
 
     run = sub.add_parser("run")
     run.add_argument("manifest", type=Path)
 
     args = parser.parse_args()
-    if args.command == "plan":
-        cmd_plan(args.manifest)
+    if args.command == "inspect":
+        cmd_inspect(args.manifest)
     elif args.command == "run":
         cmd_run(args.manifest)
 

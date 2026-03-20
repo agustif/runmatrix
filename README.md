@@ -64,7 +64,7 @@ Everything else should compile down to those.
 - stage planning
 - sequential shell execution
 - hook interface
-- console sink with animated in-flight task status
+- console sink with animated in-flight task status and stdout/stderr panels
 - minimal Textual shell
 - width-aware plan rendering with:
   - stage table
@@ -72,10 +72,38 @@ Everything else should compile down to those.
 
 ## Installation
 
+Recommended for normal use:
+
+### uv tool
+
+```bash
+uv tool install runmatrix
+```
+
+### pipx
+
+```bash
+pipx install runmatrix
+```
+
+### pip
+
+```bash
+pip install runmatrix
+```
+
+### From source (development)
+
 ```bash
 git clone https://github.com/agustif/runmatrix.git
 cd runmatrix
 uv sync
+```
+
+Run from the local checkout without installing globally:
+
+```bash
+uv tool run --from . runmatrix inspect examples/basic.yaml
 ```
 
 ## Quick start
@@ -83,13 +111,26 @@ uv sync
 Show the plan:
 
 ```bash
-uv run python -m runmatrix.cli.main plan examples/basic.yaml
+runmatrix inspect examples/basic.yaml
 ```
 
 Run it:
 
 ```bash
-uv run python -m runmatrix.cli.main run examples/basic.yaml
+runmatrix run examples/basic.yaml
+```
+
+or simply:
+
+```bash
+runmatrix examples/basic.yaml
+```
+
+From a local source checkout:
+
+```bash
+uv tool run --from . runmatrix inspect examples/basic.yaml
+uv tool run --from . runmatrix examples/basic.yaml
 ```
 
 ## Example manifest

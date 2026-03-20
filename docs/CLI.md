@@ -5,12 +5,12 @@ runtime kernel, not the center of the system.
 
 ## Commands
 
-### `plan`
+### `inspect`
 
 Build and render a manifest plan without executing it.
 
 ```bash
-uv run python -m runmatrix.cli.main plan examples/basic.yaml
+runmatrix inspect examples/basic.yaml
 ```
 
 Output includes:
@@ -23,7 +23,13 @@ Output includes:
 Execute a manifest locally with the default shell runner and console hook.
 
 ```bash
-uv run python -m runmatrix.cli.main run examples/basic.yaml
+runmatrix run examples/basic.yaml
+```
+
+or simply:
+
+```bash
+runmatrix examples/basic.yaml
 ```
 
 The current vertical slice executes tasks sequentially in topological order.
@@ -31,6 +37,10 @@ The current vertical slice executes tasks sequentially in topological order.
 In a real interactive terminal, the console sink shows an animated Rich status
 spinner while each task is running, then prints a completion line with the
 return code and elapsed time.
+
+If the task emits stdout or stderr, the default console sink also renders those
+streams in bordered output panels after completion, truncated to a reasonable
+number of lines.
 
 ## Supported manifest extensions
 
