@@ -2,6 +2,12 @@
 
 `runmatrix` is a small DAG-first experiment runner for local workflows.
 
+Try it without installing:
+
+```bash
+uvx --from git+https://github.com/agustif/runmatrix runmatrix inspect examples/basic.yaml
+```
+
 It takes the useful semantics from CI systems:
 
 - `tasks` like jobs
@@ -100,12 +106,6 @@ cd runmatrix
 uv sync
 ```
 
-Run from the local checkout without installing globally:
-
-```bash
-uv tool run --from . runmatrix inspect examples/basic.yaml
-```
-
 ## Quick start
 
 Show the plan:
@@ -126,12 +126,6 @@ or simply:
 runmatrix examples/basic.yaml
 ```
 
-From a local source checkout:
-
-```bash
-uv tool run --from . runmatrix inspect examples/basic.yaml
-uv tool run --from . runmatrix examples/basic.yaml
-```
 
 ## Example manifest
 
