@@ -1,0 +1,18 @@
+defaults:
+  PROFILE: smoke
+
+tasks:
+  - id: baseline
+    command: echo baseline
+    env:
+      RUN_ID: baseline
+
+  - id: sweep
+    command: echo sweep
+    needs: [baseline]
+    matrix:
+      strategy: zip
+      name_prefix: sweep
+      params:
+        RUN_ID: [s1, s2]
+        WIDTH: ["256", "384"]

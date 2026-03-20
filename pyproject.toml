@@ -1,0 +1,44 @@
+[project]
+name = "runmatrix"
+version = "0.1.0"
+description = "DAG-first YAML experiment runner with sequential and parallel execution"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic>=2.11.0",
+  "pyyaml>=6.0.2",
+  "rich>=14.0.0",
+  "textual>=6.3.0",
+]
+
+[dependency-groups]
+dev = [
+  "hypothesis>=6.140.0",
+  "pytest>=8.4.0",
+  "ruff>=0.12.0",
+  "ty>=0.0.1a18",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --doctest-modules"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ty]
+
+[tool.ty.src]
+include = ["runmatrix", "tests"]
