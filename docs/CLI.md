@@ -55,6 +55,14 @@ Valid values:
 - `prefixed`
 - `off` (only summary panels after completion)
 
+By default, `runmatrix` wraps task commands with `stdbuf -oL -eL` to force
+line-buffered stdout/stderr so live streaming is visible even when commands are
+not connected to a TTY. Disable this with:
+
+```bash
+RUNMATRIX_DISABLE_STDBUF=1 runmatrix run examples/basic.yaml
+```
+
 ## Supported manifest extensions
 
 - `.yaml`

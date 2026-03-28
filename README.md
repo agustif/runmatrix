@@ -70,7 +70,7 @@ Everything else should compile down to those.
 - stage planning
 - sequential shell execution
 - hook interface
-- console sink with animated in-flight task status, raw live stdout/stderr streaming, and summary panels
+- console sink with animated in-flight task status, raw live stdout/stderr streaming (line-buffered), and summary panels
 - minimal Textual shell
 - width-aware plan rendering with:
   - stage table

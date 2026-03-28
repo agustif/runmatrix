@@ -14,8 +14,11 @@ class ShellRunner:
     def run(self, task: ExpandedTask, cwd: Path, hooks) -> TaskResult:
         env = dict(os.environ)
         env.update(task.env)
+        command = task.command
+        if os.environ.get("RUNMATRIX_DISABLE_STDBUF", "0") != "1":
+            command = f"stdbuf -oL -eL {command}"
         proc = subprocess.Popen(
-            task.command,
+            command,
             shell=True,
             cwd=cwd,
             env=env,
