@@ -126,6 +126,25 @@ or simply:
 runmatrix examples/basic.yaml
 ```
 
+## Live output
+
+By default, `runmatrix` streams stdout/stderr live (raw) while tasks run.
+
+```bash
+RUNMATRIX_LIVE_OUTPUT=raw runmatrix run examples/basic.yaml
+```
+
+Other modes:
+
+- `RUNMATRIX_LIVE_OUTPUT=prefixed` for per-task prefixes
+- `RUNMATRIX_LIVE_OUTPUT=off` for summary panels only
+
+Line buffering is enforced via `stdbuf` for better live streaming. Disable it if needed:
+
+```bash
+RUNMATRIX_DISABLE_STDBUF=1 runmatrix run examples/basic.yaml
+```
+
 
 ## Example manifest
 
