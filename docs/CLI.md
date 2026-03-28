@@ -38,9 +38,10 @@ In a real interactive terminal, the console sink shows an animated Rich status
 spinner while each task is running, then prints a completion line with the
 return code and elapsed time.
 
-If the task emits stdout or stderr, the default console sink also renders those
-streams in bordered output panels after completion, truncated to a reasonable
-number of lines.
+While the task is running, stdout/stderr stream live with a small per-task
+prefix. If no live output is produced, the default console sink renders
+stdout/stderr in bordered output panels after completion, truncated to a
+reasonable number of lines.
 
 ## Supported manifest extensions
 

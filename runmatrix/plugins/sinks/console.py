@@ -12,17 +12,20 @@ from runmatrix.domain.task import ExpandedTask
 
 
 class ConsoleHook:
-    def __init__(self, *, max_output_lines: int = 20) -> None:
+    def __init__(self, *, max_output_lines: int = 20, live_output: bool = True) -> None:
         self.console = Console(highlight=False)
         self.max_output_lines = max_output_lines
+        self.live_output = live_output
         self._status: Status | None = None
         self._started_at: float | None = None
+        self._saw_output = False
 
     def on_plan_built(self, plan: Plan) -> None:
         self.console.print(f"[bold]plan[/bold] tasks={len(plan.tasks)}")
 
     def before_task_run(self, task: ExpandedTask) -> None:
         self._started_at = time.perf_counter()
+        self._saw_output = False
         self._status = self.console.status(f"[cyan]running[/cyan] {task.id}", spinner="dots")
         self._status.start()
 
@@ -37,8 +40,18 @@ class ConsoleHook:
         self.console.print(
             f"[{style}]done[/{style}] {task.id} rc={result.returncode}{elapsed_suffix}"
         )
-        self._render_output(task.id, "stdout", result.stdout, border_style="blue")
-        self._render_output(task.id, "stderr", result.stderr, border_style="yellow")
+        if not self._saw_output:
+            self._render_output(task.id, "stdout", result.stdout, border_style="blue")
+            self._render_output(task.id, "stderr", result.stderr, border_style="yellow")
+
+    def on_task_output(self, task: ExpandedTask, stream: str, text: str) -> None:
+        if not self.live_output:
+            return
+        if text == "":
+            return
+        self._saw_output = True
+        stream_tag = "out" if stream == "stdout" else "err"
+        self.console.print(f"[dim]{task.id} {stream_tag}[/dim] {text}")
 
     def _render_output(
         self,

@@ -20,7 +20,7 @@ def run_plan(
     for task in plan.tasks:
         for hook in hooks:
             hook.before_task_run(task)
-        result = runner.run(task, cwd)
+        result = runner.run(task, cwd, hooks)
         results.append(result)
         for hook in hooks:
             hook.after_task_run(task, result)
