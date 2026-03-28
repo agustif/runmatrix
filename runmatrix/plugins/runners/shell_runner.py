@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import os
+import shlex
 import subprocess
 import threading
 from pathlib import Path
+from shutil import which
 
 from runmatrix.domain.enums import TaskStatus
 from runmatrix.domain.result import TaskResult
@@ -15,8 +17,9 @@ class ShellRunner:
         env = dict(os.environ)
         env.update(task.env)
         command = task.command
-        if os.environ.get("RUNMATRIX_DISABLE_STDBUF", "0") != "1":
-            command = f"stdbuf -oL -eL {command}"
+        use_stdbuf = os.environ.get("RUNMATRIX_DISABLE_STDBUF", "0") != "1" and which("stdbuf")
+        if use_stdbuf:
+            command = f"stdbuf -oL -eL bash -lc {shlex.quote(command)}"
         proc = subprocess.Popen(
             command,
             shell=True,
