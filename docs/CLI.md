@@ -38,10 +38,22 @@ In a real interactive terminal, the console sink shows an animated Rich status
 spinner while each task is running, then prints a completion line with the
 return code and elapsed time.
 
-While the task is running, stdout/stderr stream live with a small per-task
-prefix. If no live output is produced, the default console sink renders
+While the task is running, stdout/stderr stream live as raw output (no prefixes)
+by default. If no live output is produced, the default console sink renders
 stdout/stderr in bordered output panels after completion, truncated to a
 reasonable number of lines.
+
+You can change live output behavior via an environment variable:
+
+```bash
+RUNMATRIX_LIVE_OUTPUT=prefixed runmatrix run examples/basic.yaml
+```
+
+Valid values:
+
+- `raw` (default)
+- `prefixed`
+- `off` (only summary panels after completion)
 
 ## Supported manifest extensions
 

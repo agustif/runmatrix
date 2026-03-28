@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -37,7 +38,14 @@ def cmd_inspect(path: Path) -> None:
 def cmd_run(path: Path) -> None:
     manifest = _load_manifest(path)
     plan = build_plan(manifest)
-    run_plan(plan, cwd=path.parent, runner=ShellRunner(), hooks=[ConsoleHook()])
+    live_output = os.environ.get("RUNMATRIX_LIVE_OUTPUT", "raw").lower()
+    if live_output == "off":
+        hook = ConsoleHook(live_output=False)
+    elif live_output in {"raw", "prefixed"}:
+        hook = ConsoleHook(live_output=True, live_output_mode=live_output)
+    else:
+        raise ValueError("RUNMATRIX_LIVE_OUTPUT must be raw, prefixed, or off")
+    run_plan(plan, cwd=path.parent, runner=ShellRunner(), hooks=[hook])
 
 
 def main() -> None:

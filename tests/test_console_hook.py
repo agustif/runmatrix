@@ -8,13 +8,24 @@ from runmatrix.plugins.sinks.console import ConsoleHook
 
 
 def test_console_hook_tracks_status_lifecycle() -> None:
-    hook = ConsoleHook()
+    hook = ConsoleHook(live_output_mode="prefixed")
     task = ExpandedTask(id="task", base_id="task", command="echo hi", env={}, needs=[])
     result = TaskResult(task_id="task", status=TaskStatus.SUCCEEDED, returncode=0)
 
     hook.on_plan_built(Plan(tasks=[task]))
     hook.before_task_run(task)
     assert hook._status is not None
+    hook.after_task_run(task, result)
+    assert hook._status is None
+
+
+def test_console_hook_raw_output_skips_status() -> None:
+    hook = ConsoleHook(live_output_mode="raw")
+    task = ExpandedTask(id="task", base_id="task", command="echo hi", env={}, needs=[])
+    result = TaskResult(task_id="task", status=TaskStatus.SUCCEEDED, returncode=0)
+
+    hook.before_task_run(task)
+    assert hook._status is None
     hook.after_task_run(task, result)
     assert hook._status is None
 
